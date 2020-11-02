@@ -1,0 +1,103 @@
+{% extends 'basic.html' %}
+{% block title%} Blog Home {% endblock %}
+
+{% block blogactive %}active{% endblock blogactive %}
+
+{% block body %}
+
+
+
+<div id="text" style="font-family: 'Pacifico', cursive; padding-top: 3%; "></div>
+
+<script type="text/javascript">
+  var i = 0, text;
+  text = "Welcome To Blogs"
+
+  function typing() {
+    if (i < text.length) {
+      document.getElementById("text").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 80);
+    }
+  }
+  typing();
+</script>
+
+<style>
+  #text {
+    font-family: 'Acme', sans-serif;
+    font-size: 5ch;
+    text-align: center;
+    font-weight: 3%;
+
+  }
+</style>
+<!-- Make your blog jumbotron -->
+
+
+
+<div class="container aos-init aos-animate" style="padding-top: 3%; padding-left: 3%; padding-right: 3%;"
+  data-aos="flip-up" data-aos-duration="800">
+  <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 font-italic">MAKE YOUR BLOGS FOR FREE</h1>
+      <p class="lead my-3">Make your blogs and share your Knowledge with others even see the blogs made by
+        other artists.</p>
+      <!-- <p class="lead mb-0"><a href="/blog/blogupload"
+          class="text-white font-weight-bold font-italic">Make your Blog...</a></p> -->
+
+          {% if user.is_authenticated%}
+          <p class="lead mb-0"><a href="/blog/blogupload" class="text-white font-weight-bold font-italic">Make Your Blog...</a></p>
+          {% else %}
+          <!-- Button trigger modal -->
+          <p class="lead mb-0 text-white font-weight-bold font-italic">You Have to be Logged in to Upload</p>
+          <!-- Button trigger modal -->
+          
+          
+          {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<!-- -----Blog Display----------------------------- -->
+<hr>
+<div class="container my-2">
+
+<h1 class="text-center"style="font-family: 'Pacifico', cursive; padding-bottom: 2%;font-size: 5ch;font-weight: 3%;">Music Articles by Minor Kordz!!!</h1>
+
+{% for post in allPosts %}
+    <div class="col">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row my-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary">{{post.author}}</strong>
+          <h3 class="mb-0"><a class="text-dark" href="/blog/{{post.slug}}">{{post.title}}</a></h3>
+          <div class="mb-1 text-muted">{{post.timestamp}}</div>
+          <p class="card-text mb-auto"><div class="preview">{{post.content|safe| truncatechars:500}}</div></p>
+          <div class="my-2"><a href="/blog/{{post.slug}}" roll="button" class="btn btn-info">Continue reading</a></div>
+          
+        </div>
+       
+      </div>
+    </div>
+{% endfor %}
+
+
+</div>
+
+
+{% block js %}
+<script>
+let previews = document.getElementsByClassName('preview');
+Array.from(previews).forEach((element)=>{
+  element.innerHTML = element.innerText;
+})
+
+</script>
+
+
+{% endblock%}
+
+
+
+{% endblock %}

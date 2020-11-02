@@ -1,0 +1,95 @@
+{% extends 'basic.html' %}
+
+
+{% block body %}
+
+<div class="container">
+    <div class="text-center">
+        <h3>Upload your file here</h3>
+    </div>
+    <form action="/songs/songuserPost" method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <div class="container">
+
+            <div class="text-center">
+                <div class="form-group ">
+                    {% comment %} <label for="exampleFormControlFile1"><span class="text-center">Drag or choose your
+                            file</span></label> {% endcomment %}
+                    <div class="text-center mt-5">
+                        <label for="music" class="btn btn-info w-75"> Drag and Drop or Choose Your File
+                            <input type="file" class="form-control-file btn btn-info " id="music" name="music" style="background-color: rgb(0, 94, 122);text-align:center;">
+                                
+                        </label>
+                    </div>
+                    
+                
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <label for="stitle"><h6>Title</h6></label>
+            <input type="text" class="form-control" id="stitle" name="stitle">
+        </div>
+        <div class="form-group">
+            <label for="sartist"><h6>Artist</h6></label>
+            <input type="text" class="form-control" id="sartist" name="sartist">
+        </div>
+         <div class="form-group">
+            <label for="astitle"><h6>Album Title</h6></label>
+            <input type="text" class="form-control" id="astitle" name="astitle">
+        </div>
+
+        <div class="form-group">
+            <label for="genre"><h6>Genre</h6></label>
+            <input type="text" class="form-control" id="genre" name="genre">
+        </div>
+        <div class="form-group">
+            <label for="artwork"><h6>Art Work</h6></label>
+                            <input type="file" class="form-control-file btn btn-info " id="artwork"name="artwork" style="background-color: rgb(0, 140, 122);text-align:center;">
+                                
+                        
+        </div>
+        <div class="form-group">
+            <label for="tag"><h6>Tags</h6></label>
+            <input type="text" class="form-control" id="tag" name="tag">
+        </div>
+
+        <div class="form-group">
+            <label for="sdesc">
+                <h6>Description</h6>
+            </label>
+            <textarea class="form-control" name="sdesc" id="sdesc" cols="30" rows="4"></textarea>
+            {% comment %} <input type="textarea" class="form-control" id="udesc" name="udesc" placeholder="@gmail.com">
+            {% endcomment %}
+        </div>
+        <button type="cancel" class="btn btn-secondary mb-2">Cancel</button>
+        
+        <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </form>
+
+</div>
+
+
+
+
+
+
+{% block js %} 
+{% comment %} <script>
+
+    $(":file").filestyle();
+</script> {% endcomment %}
+
+
+
+{% endblock %}
+
+    
+
+
+
+
+{% endblock %}

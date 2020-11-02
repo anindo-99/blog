@@ -1,0 +1,37 @@
+{% extends 'basic.html' %}
+{% load humanize %}
+{% load static %}
+{% load extras %}
+
+
+{% block body %}
+
+
+
+<div class="container my-3">
+    <div class="row">
+        <div class="col-md-4" style="padding-top:3%;">
+
+            <img src="{{post.album_logo.url}}" alt="" width="300px" height="300px">
+        </div>
+        <div class="col-md-8" style="padding-top:3%;">
+
+            <h2>{{post.song_title}}</h2>
+            <p class="blog-post-meta">by <a class="text-dark" href="#"><b>{{post.artist}}</b></a><br>
+                <div>
+            <audio controls style="padding-top: 3%;">
+                <source src="{{post.file.url}}" type="audio/wav">
+            
+                <!-- <embed height="50" width="100" src="{{post.file.url}}"> -->
+            </audio>
+            </div>
+
+            <div class="my-2">
+            <a href="{{post.file.url}}" download><button class="btn btn-outline-danger">Download</button></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

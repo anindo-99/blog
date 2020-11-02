@@ -1,0 +1,145 @@
+{% extends 'basic.html' %}
+{% block title%} Song Home {% endblock %}
+
+{% block musicactive %}active{% endblock musicactive %}
+
+{% block css %}
+
+.card-img{
+height: 300px;
+width: 300px;
+}
+.card-title{
+font-size: 2rem;
+}
+
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div id="text" style="font-family: 'Pacifico', cursive; padding-top: 3%;"></div>
+
+<script type="text/javascript">
+  var i = 0, text;
+  text = "Welcome To Cadence Music"
+
+  function typing() {
+    if (i < text.length) {
+      document.getElementById("text").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 80);
+    }
+  }
+  typing();
+</script>
+
+<style>
+  #text {
+    font-family: 'Acme', sans-serif;
+    font-size: 5ch;
+    text-align: center;
+    font-weight: 3%;
+
+  }
+</style>
+
+<div class="container aos-init aos-animate" style="padding-top: 3%; padding-left: 3%; padding-right: 3%;">
+  <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+    <div class="col-md-6 px-0">
+      <h1 class="display-4 font-italic">UPLOAD YOUR MUSIC FOR FREE</h1>
+      <p class="lead my-3">Get started with Minor Kordz and Upload your tracks.Explore the largest community of artists,
+        bands, podcasters and creators of music and audio.</p>
+
+      {% if user.is_authenticated%}
+      <p class="lead mb-0"><a href="/upload" class="text-white font-weight-bold font-italic">Upload your Music...</a>
+      </p>
+      {% else %}
+      <!-- Button trigger modal -->
+      <p class="lead mb-0 text-white font-weight-bold font-italic">You Have to be Logged in to Upload</p>
+      <!-- Button trigger modal -->
+
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<hr>
+<!-- <div class="container my-3">
+
+
+  {% comment %} Trendings {% endcomment %}
+  <h2 class="mx-3">Trending</h2>
+  <div class="row">
+    {% for song in allPosts  %}
+    <div class="col-md-3 mx-2 my-2">
+      <div class="card mx-2" style="width: 18rem;box-shadow: -30px 30px 20px rgba(0, 0, 0, 0.3);">
+        <img src="{{song.album_logo.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"><a class="text-dark" href="/songs/{{song.slug}}">{{song.song_title}}</a></h5>
+          <p class="card-text">{{song.artist}}</p>
+          <a href="/songs/{{song.slug}}" class="btn btn-primary">Listen</a>
+        </div>
+      </div>
+    </div>
+
+{% endfor %}
+    
+  </div>
+ </div> -->
+
+
+<div class="container" style="padding-top: 3%;">
+  <h2 class="mx-3" style="font-family: 'Pacifico', cursive;padding-bottom: 2%;">All Songs</h2>
+  {% for song in allPosts  %}
+  <div class="container">
+  <div class="card mb-3 " style="max-width: 1000px;">
+    <div class="card" style="box-shadow: -30px 30px 20px rgba(0, 0, 0, 0.116);">
+      <div class="row no-gutters">
+        <div class="col-md-6">
+          <img src="{{song.album_logo.url}}" class="card-img" alt="...">
+        </div>
+        <div class="col-md-6">
+          <div class="card-body">
+            <h5 class="card-title"><a class="text-dark" href="/songs/{{song.slug}}">{{song.song_title}}</a></h5>
+            <p class="card-text">{{song.artist}}</p>
+            <p class="card-text">{{song.desc}}</p>
+            <a href="/songs/{{song.slug}}" class="btn btn-primary">Listen</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endfor %}
+
+  <!-- <div class="card-deck my-3">
+  {% for song in allPosts  %}
+    <div class="card" style="box-shadow: -30px 30px 20px rgba(0, 0, 0, 0.3);">
+      <img src="{{song.album_logo.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title"><a class="text-dark" href="/songs/{{song.slug}}">{{song.song_title}}</a></h5>
+        <p class="card-text">{{song.artist}}</p>
+        <a href="/songs/{{song.slug}}" class="btn btn-primary">Listen</a>
+        
+      </div>
+    </div>
+  
+    {% if forloop.counter|divisibleby:3 and forloop.counter > 0 and not forloop.last %}
+    <div class="card-deck my-3">
+      {%endif%}
+    {% endfor %}
+    </div>
+    <a href="/"><button type="button" class="btn btn-secondary">All Music</button></a>
+  </div> -->
+
+</div>
+<hr>
+
+
+
+{% endblock  %}

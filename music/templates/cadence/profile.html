@@ -1,0 +1,109 @@
+{% extends 'basic.html' %}
+
+{% block title%} User Profile {% endblock %}
+
+
+{% comment %} <link rel="stylesheet" href="style.css" > {% endcomment %}
+
+{% load static %}
+
+{% block css %}
+
+.profile-pic{
+	max-width: 200px;
+	max-height:200px;
+	margin: 0 auto;
+	border-radius: 50%;
+}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% comment %} <div class="container my-3">
+{% for pro in user_profile %}{% endfor %}
+    <div class="row">
+        <div class="col-md-4" style="padding-top:3%;">
+
+            <img src="{{user.profile_pic.url}}" alt="" width="300px" height="300px">
+        </div>
+        <div class="col-md-8" style="padding-top:3%;">
+
+            <h2>{{user.username}}</h2>
+            <p class="blog-post-meta">by <a class="text-dark" href="#"><b>{{user.last_name}}</b></a><br>
+                
+            
+        </div>
+    </div>
+
+</div> {% endcomment %}
+
+
+
+
+
+
+
+
+<br>
+<div class="container-fluid">
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-body">
+			<a class="btn btn-warning" href="{% url 'index' %}"> &#8592; Back to Cadance</a>
+			<hr>
+			<h3 style="text-align: center">Account Settings</h3>
+			<hr>
+			<img class="profile-pic" src="{{request.user.userprofile.profile_pic.url}}" >
+            {% comment %} {%static 'img/user2.png'%} {% endcomment %}
+		
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="card card-body">
+			
+			 <form method="POST" action="/editprofile" enctype="multipart/form-data">
+				{% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-6">
+        <label for="first_name">First Name:</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" value="{{user.first_name}}" disabled>
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="last_name">Last Name:</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" value="{{user.last_name}}"disabled>
+        </div>  
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="mail" class="form-control" id="email" name="email" value="{{user.email}}" disabled>
+        </div>
+
+    <div class="form-group">
+        <label for="phone">Phone no:</label>
+        {% comment %} {% for obj in user_profile  %} {% endcomment %}
+        <input type="phone" class="form-control" id="phone" name="phone" value="{{user_profile.phone}}" disabled>
+        {% comment %} {% endfor %} {% endcomment %}
+        </div>
+         <div class="form-group">
+            <label for="upload">Upload Image</label>
+                            <input type="file" class="form-control-file btn btn-info " id="bimages" name="bimages"disabled>
+
+            <div class="form-group my-2">
+            
+			<input id="edit"class="btn btn-primary" type="submit" value="Edit Profile" name="Update Information">
+            </div>
+			</form> 
+            
+		</div>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}
+
+   

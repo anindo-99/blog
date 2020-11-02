@@ -1,0 +1,331 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http_equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>{% block title%} {% endblock %}</title>
+    {% block head %}
+    {% endblock%}
+    <style>
+        {% block css %}
+
+        {% endblock %}
+    </style>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand font-weight-bold" style="font-family: 'Pacifico', cursive; "href="/">
+            <img src="{%static 'clef2.png'%}" width="30" height="30" class="d-inline-block align-top" alt=""
+                loading="lazy">
+            Minor Kordz
+        </a>
+
+
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="mr-auto form-inline">
+                <ul class="navbar-nav mr-auto  justify-content-end">
+                    <li class="nav-item  font-weight-bold {% block homeactive %}
+                {% endblock homeactive %}">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item  font-weight-bold {% block aboutactive %}
+                {% endblock aboutactive %}">
+                        <a class="nav-link" href="/about">About Us</a>
+                    </li>
+
+
+                    <li class="nav-item  font-weight-bold {% block musicactive %}
+                {% endblock musicactive %}">
+                        <a class="nav-link" href="/songs">
+                            Music
+                        </a></li>
+                        {% comment %} <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Remixes</a>
+                            <a class="dropdown-item" href="#">Originals</a>
+                            <!-- <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="#">Something else here</a>-->
+                        </div> {% endcomment %}
+
+                    <li class="nav-item  font-weight-bold {% block contactactive %}
+                {% endblock contactactive %}">
+                        {% if user.is_authenticated%}
+                        <a class="nav-link" href="/contact">Contact Us</a>
+                        {% else %}
+                        <a class="nav-link" href=""data-toggle="modal" data-target="#loginmodal">Contact Us</a>
+                        {% endif %}
+
+                    </li>
+
+                    <li class="nav-item  font-weight-bold {% block blogactive %}{% endblock blogactive %}">
+                        <a class="nav-link" href="/blog">
+                            
+                                blog
+                            <i class="fas fa-blog" aria-hidden="true"></i>
+                        </a>
+                    </li>
+            </div>
+
+            </ul>
+            <div class="ml-auto form-inline">
+                <!-- <ul class="nav justify-content-end">
+                    <li class="nav-item">
+
+                        {% if user.is_authenticated%}
+                        {% comment %} <a class="nav-link" href="/upload">
+
+                            <button class="btn btn-outline-light  my-2 my-sm-0 " type="submit">Upload</button>
+
+                        </a> {% endcomment %}
+                        <button type="button" class="btn btn-outline-light  my-2 mx-2 my-sm-0" data-toggle="modal"
+                            data-target="#upload">
+                            Upload
+                        </button>
+
+                        {% else %}
+                        <button type="button" class="btn btn-outline-light  my-2 mx-2 my-sm-0" data-toggle="modal"
+                            data-target="#notupload">
+                            Upload
+                        </button>
+                        {% endif %}
+                    </li>
+                </ul> -->
+
+                <form method="get" action="/search" class="form-inline my-2 my-lg-0">
+                
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search"
+                        name="search" id="search">
+                    <button class="btn btn-outline-light my-2 mr-2 my-sm-0" type="submit">Search</button>
+                </form>
+                {% if user.is_authenticated%}
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Welcome, {{request.user}}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/logout">Log Out</a>
+                            <a class="dropdown-item" href="/profile">Profile</a>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+
+                {% else %}
+                <!-- Log In trigger modal -->
+                <button type="button" id="logg"class="btn btn-light m-2 my-sm-0" data-toggle="modal" data-target="#loginmodal">
+                    Log In
+                </button>
+                <!-- Sign Up trigger modal -->
+                <button type="button" class="btn btn-light my-2 my-sm-0" data-toggle="modal" data-target="#signupmodal">
+                    Sign Up
+                </button>
+                {% endif %}
+            </div>
+
+        </div>
+    </nav>
+    {% for message in messages  %}
+    <div class="alert alert-{{message.tags}} mb-0 alert-dismissible fade show" role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+
+
+
+
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="signupmodal" tabindex="-1" role="dialog" aria-labelledby="signupmodal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupmodal">Sign Up Here</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/signup" method="post">
+                         {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name">First Name:</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                placeholder="First Name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name:</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username"
+                                placeholder="Choose an unique Username" required>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="@gmail.com"
+                                aria-describedby="emailHelp" required>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="pass1">Password</label>
+                            <input type="password" class="form-control" id="pass1" name="pass1"
+                                placeholder="Enter your Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass2">Confirm Password</label>
+                            <input type="password" class="form-control" id="pass2" name="pass2"
+                                placeholder="Enter your password again" required>
+                        </div>
+                        <p>Already have an account?<a href=""data-toggle="modal" data-dismiss="modal"data-target="#loginmodal">Log In</a></p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Log In Modal -->
+    <div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginmodal">Log In Here</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/login" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="lusername">Username</label>
+                            <input type="text" class="form-control" id="lusername" name="lusername"
+                                placeholder="Choose an unique Username" required>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pass">Password</label>
+                            <input type="password" class="form-control" id="pass" name="pass"
+                                placeholder="Enter your Password" required>
+                        </div>
+                        <p>New User?<a href=""data-toggle="modal" data-dismiss="modal"data-target="#signupmodal">Sign Up</a></p>
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- upload modal -->
+
+    <div class="modal fade" id="upload" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="upload" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="upload">Upload Your Own</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Chosse your option
+
+                </div>
+
+
+                <div class="modal-footer">
+
+
+                    <a class="nav-link" href="/upload">
+                        <button type="button" class="btn btn-primary mx-0">Music</button>
+                    </a>
+
+                    <a class="nav-link" href="/blog/blogupload">
+                        <button type="button" class="btn btn-primary">Blog</button>
+                    </a>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- upload if user is not authenticated -->
+
+    <div class="modal fade" id="notupload" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="notupload" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notupload">Upload Here</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    You have to be logged in
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <!-- <button type="button" class="btn btn-primary">Upload</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% block body %} {% endblock  %}
+
+    <div class="container" style=" padding-bottom: 2%;font-size: 2ch;font-weight: 2%;">
+        <p class="rights-text text-center">© 2021 Created By <b>ANINDO MAZUMDAR</b> All Rights Reserved.</p>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    {% block js %} {% endblock %}
+    
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+{% extends 'basic.html' %}
+
+
+
+
+
+
+
+{% block body %}
+
+<!---------------------------- TINY MCE ------------------------------>
+
+<style>
+    #bcontent {
+        height: 100vh;
+    }
+</style>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#bcontent',
+        plugins: [
+            'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+            'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+            'table emoticons template paste help'
+        ],
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+            'forecolor backcolor emoticons | help',
+        menu: {
+            favs: { title: 'My Favorites', items: 'code visualaid | searchreplace | spellchecker | emoticons' }
+        },
+        menubar: 'favs file edit view insert format tools table help',
+        content_css: 'css/content.css'
+    });
+</script>
+
+
+<!-- --------------------------------------------- -->
+
+<div class="container mt-2 mb-5">
+    <div class="text-center">
+        <h2>Make Your Blog</h2>
+    </div>
+    <form action="/blog/bloguploaded" method="post">
+
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="btitle"><h6>Title</h6></label>
+            <input type="text" class="form-control" id="btitle" name="btitle">
+        </div>
+        <div class="form-group">
+            <label for="bauther"><h6>Author</h6></label>
+            <input type="text" class="form-control" id="bauther" name="bauther">
+        </div>
+
+        <div class="form-group">
+            <label for="upload"><h6>Image (If any)</h6></label>
+                            <input type="file" class="form-control-file btn btn-info " id="bimages" name="bimages"style="background-color: rgb(0, 140, 122);text-align:center;">
+                                
+                        
+        </div>
+      
+       
+
+
+<div class="form-group">
+    <label for="bcontent">
+        <h4 class="font-weight-bold">Write your blog here</h4>
+    </label>
+    <textarea class="form-control" name="bcontent" id="bcontent" cols="30" rows="4"></textarea>
+    {% comment %} <input type="textarea" class="form-control" id="udesc" name="udesc" placeholder="@gmail.com">
+    {% endcomment %}
+</div>
+        
+
+        <button type="cancel" class="btn btn-secondary mb-2">Cancel</button>
+        
+        <button type="submit" class="btn btn-primary mb-2">Save</button>
+        </form>
+
+</div>
+
+
+
+
+
+
+{% block js %} 
+{% comment %} <script>
+
+    $(":file").filestyle();
+</script> {% endcomment %}
+
+
+
+{% endblock %}
+
+    
+
+
+
+
+{% endblock %}

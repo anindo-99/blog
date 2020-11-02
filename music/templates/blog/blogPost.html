@@ -1,0 +1,139 @@
+{% extends 'basic.html' %}
+{% load humanize %}
+{% load static %}
+{% load extras %}
+
+
+
+{% block css %}
+
+
+
+{% endblock %}
+{% block body %}
+
+
+
+<div class="container my-3">
+  <h2 class="blog-post-title">{{post.title}}</h2>
+  <p class="blog-post-meta">{{post.timestamp}} by <a href="#">{{post.author}}</a>
+  
+  <span>{{post.views}} views</span>
+  </p>
+  <hr>
+  <p>{{post.content |safe}}</p>
+
+</div>
+
+  
+
+<div class="container">
+  <h3>Comments ({{comments.count}})</h3>
+  {% if user.is_authenticated %}
+  <form action="/blog/postComment" method="post">
+    {% csrf_token %}
+
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">Comment here:</label>
+      <input type="text" class="form-control" name="comment" placeholder="enter comment here">
+
+
+    </div>
+    <input type="hidden" name="postSno" value="{{post.sno}}">
+    <input type="hidden" name="parentSno" value="">
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+
+  {% else %}
+
+  <h6>You have to be logged in to post a comment. Please Log In.</h6>
+  {% endif %}
+
+
+  {% for comment in comments  %}
+  <div class="row my-3">
+
+    <div class="col-md-1 "><img id="userpic"class="rounded w-100   border border-dark rounded-circle " src="{{comment.user.userprofile.profile_pic.url}}" height="75px" alt="">
+    </div>
+    <div class="col-md-11"><b>{{comment.user.username}} </b><span
+        class="badge badge-secondary">{{comment.timestamp | naturaltime}}</span>
+      <div>{{comment.comment}}</div>
+
+      {% comment %} Reply form {% endcomment %}
+
+      <div class="reply mx-0">
+        {% if user.is_authenticated %}
+
+        <button class="btn btn-sm btn-danger" type="button" data-toggle="collapse"
+          data-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}}">
+          Reply
+        </button>
+        </p>
+        <div class="collapse" id="replyBox{{comment.sno}}">
+          <div class="card card-body my-2">
+            <form action="/blog/postComment" method="post">
+              {% csrf_token %}
+
+
+              <div class="form-group">
+                <!-- <label for="comment">Comment here:</label> -->
+                <input type="text" class="form-control" name="comment" placeholder="Reply here">
+
+                <input type="hidden" name="parentSno" value="{{comment.sno}}">
+              </div>
+              <input type="hidden" name="postSno" value="{{post.sno}}">
+
+              <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+
+            </form>
+          </div>
+        </div>
+        {% else %}
+        <button class="btn btn-sm btn-danger" type="button" data-toggle="collapse"
+          data-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}}" disabled>
+          Log In to Reply
+        </button>
+        {% endif %}
+      </div>
+        <div class="replies ">
+          {% for reply in repDict|get_val:comment.sno  %}
+
+          <div class="row my-3">
+
+            <div class="col-md-1 "><img class="rounded w-100   border border-dark rounded-circle" src="{{reply.user.userprofile.profile_pic.url}}" height="55px"alt=""></div>
+            <div class="col-md-11"><b>{{reply.user.username}} </b><span
+                class="badge badge-secondary">{{reply.timestamp | naturaltime}}</span>
+              <div>{{reply.comment}}</div>
+
+            </div>
+            </div>
+            <!-- {{reply.comment}} -->
+            
+            
+            {% endfor %}
+
+
+          </div>
+          
+
+        </div>
+        
+      </div>
+      {% endfor %}
+    </div>
+    
+
+
+  <!-- </div> -->
+    {% comment %} <footer class="my-5 pt-5 text-muted text-center text-small">
+      <p class="mb-1">© 2017-2020 Company Name</p>
+      <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+      </ul>
+    </footer> {% endcomment %}
+  {% endblock %}
